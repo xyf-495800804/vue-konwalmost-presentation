@@ -12,6 +12,9 @@ import "./utils/rem";
 import "./assets/iconfont/iconfont.css";
 /* 引入公共样式 */
 import "./assets/css/public.css";
+/* 引入axios */
+import axios from "axios";
+Vue.prototype.$axios = axios;
 
 Vue.config.productionTip = false;
 

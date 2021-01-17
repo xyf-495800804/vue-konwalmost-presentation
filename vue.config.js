@@ -1,4 +1,16 @@
 module.exports = {
   /* 禁止eslint检测 */
-  lintOnSave: false
+  lintOnSave: false,
+  /* 配置代理 */
+  devServer: {
+    proxy: {
+      "/api": {
+        target: "http://127.0.0.1:8080",
+        changeOrigin: true,
+        pathRewrite: {
+          "^/api": "/mock"
+        }
+      }
+    }
+  }
 };

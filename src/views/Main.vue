@@ -13,15 +13,15 @@
 </template>
 
 <script>
-import MainListWrapper from "../components/MainListWrapper";
-import MainSidebar from "../components/MainSidebar";
+import MainListWrapper from '../components/MainListWrapper'
+import MainSidebar from '../components/MainSidebar'
 export default {
-  name: "Main",
+  name: 'Main',
   components: {
     MainListWrapper,
     MainSidebar,
   },
-};
+}
 </script>
 
 <style lang="less" scoped>
@@ -29,16 +29,18 @@ export default {
   display: flex;
   -webkit-box-align: start;
   align-items: flex-start;
-  width: 50rem;
+  width: 1000px;
   padding: 0 0.8rem;
-  margin: 0.5rem auto;
+  margin: auto;
   .list {
+    margin-top: 70px;
     flex-shrink: 0;
     margin-right: 0.5rem;
     margin-bottom: 0;
-    width: 34.7rem;
+    width: 694px;
   }
   .sidebar {
+    margin-top: 70px;
     -webkit-box-flex: 1;
     flex: 1 1;
     font-size: 0.7rem;
