@@ -46,24 +46,14 @@
         type="primary"
         class="question"
       >提问</el-button>
-      <!-- 登录按钮 -->
-      <div
-        class="userInfo"
-        v-if="!isLogin"
-      >
-        <router-link :to="{ name: 'Singup' }">登录</router-link>
-      </div>
-      <div
-        class="userInfo"
-        v-if="isLogin"
-      >
+      <div class="userInfo">
         <!-- 消息提示icon -->
         <i class="el-icon-bell m-r-40 icon-item"></i>
         <!-- 用户信息icon -->
         <i class="el-icon-message m-r-40 icon-item"></i>
         <!-- 下拉菜单 -->
         <el-dropdown
-          v-if="user"
+          v-if="isLogin"
           placement="bottom"
           trigger="click"
           class="hand-click"
@@ -75,6 +65,11 @@
             />
           </span>
           <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item>
+              <div>
+                <i class="iconfont icon-pikachu-"></i><span>{{name}}</span>
+              </div>
+            </el-dropdown-item>
             <el-dropdown-item>
               <div @click="goToPersonalPage">
                 <i class="iconfont icon-wode"></i><span>我的首页</span>
@@ -92,7 +87,7 @@
         </el-dropdown>
         <router-link
           class="singup"
-          v-else
+          v-if="!isLogin"
           to="/singup"
         >登录</router-link>
       </div>
@@ -103,15 +98,21 @@
 </template>
 
 <script>
+import { checkLogin } from '../api/checkLogin'
+import { logout } from '../api/logout'
 export default {
   name: 'MainHeader',
   data() {
     return {
-      user: false,
       activeIndex: '1', //默认高亮选项
       keywords: '',
-      isLogin: true,
+      isLogin: false,
+      name: '', //用户名
     }
+  },
+  mounted() {
+    //检查cookies事件
+    this.inspectCookies()
   },
   methods: {
     /* 选中菜单触发事件 */
@@ -124,7 +125,42 @@ export default {
       console.log('跳转到用户首页')
     },
     /* 退出事件函数 */
-    logout() {},
+    logout() {
+      logout().then((res) => {
+        if (res.status === 200) {
+          this.$notify({
+            title: '成功',
+            message: '注销成功',
+            type: 'success',
+          })
+          this.name = ''
+          this.$router.push('/singup')
+        } else {
+          //注销失败提示
+          this.$notify({
+            title: '失败',
+            message: '注销失败',
+            type: 'error',
+          })
+        }
+      })
+    },
+    // cookies事件
+    async inspectCookies() {
+      await checkLogin().then((res) => {
+        if (res.status === 200) {
+          // 给name赋值
+          this.name = res.name
+          //修改登录状态
+          this.isLogin = true
+        } else {
+          // 未登录跳转到登录页
+          this.$router.push('/singup')
+          //修改登录状态
+          this.isLogin = false
+        }
+      })
+    },
   },
 }
 </script>

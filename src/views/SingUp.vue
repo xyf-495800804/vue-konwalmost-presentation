@@ -1,5 +1,5 @@
 <!--
-    注册页面
+    登录页面
 -->
 <template>
   <div class="singup">
@@ -16,7 +16,7 @@
           <input
             ref="One"
             type="text"
-            placeholder="手机号或邮箱"
+            placeholder="用户名或邮箱"
             class="input"
             v-model="number"
             @blur="inputOne"
@@ -74,7 +74,9 @@
         >忘记密码?</router-link>
         <el-button
           class="btn-login"
+          @click="Login"
           type="primary"
+          :disabled='btnDisabled'
         >登录</el-button>
         <div class="topic">未注册手机验证后自动登录，注册即代表同意<a href="https://www.zhihu.com/term/zhihu-terms">《知乎协议》</a><a href="https://www.zhihu.com/term/privacy">《隐私保护指引》</a></div>
         <!-- 社交账号登录 -->
@@ -287,15 +289,19 @@
 </template>
 
 <script>
+import { login } from '../api/login'
+import md5 from 'md5'
 export default {
   name: 'SingUp',
   data() {
     return {
       /* 登录表单 */
-      number: '', //手机号
-      password: '', //密码
+      number: '奔跑的五花肉', //用户名
+      password: 'xyf5201314...', //密码
       /* 默认小眼睛不开启 */
       eyesDisabled: true,
+      //默认登录按钮禁用
+      btnDisabled: true,
     }
   },
   methods: {
@@ -312,19 +318,21 @@ export default {
     // 输入框失去焦点事件
     inputOne() {
       if (this.number != undefined && this.number.length <= 0) {
-        this.$refs.One.placeholder = '请输入手机号和邮箱'
+        this.$refs.One.placeholder = '请输入用户名和邮箱'
       }
     },
     /* 输入框获得焦点 */
     inputThree() {
       this.$message({
-        message: '亲,请认真填写手机号和邮箱奥!',
+        message: '亲,请认真填写用户名和邮箱奥!',
         type: 'warning',
       })
     },
     inputTwo() {
       if (this.password != undefined && this.password.length <= 0) {
         this.$refs.Two.placeholder = '请输入密码'
+      } else {
+        this.btnDisabled = false
       }
     },
     inputFour() {
@@ -332,6 +340,40 @@ export default {
         message: '亲,请认真填写密码奥!',
         type: 'warning',
       })
+    },
+    //登录事件
+    Login() {
+      if (
+        (this.number != undefined && this.number.length == 0) ||
+        (this.password != undefined && this.password.length == 0)
+      ) {
+        this.$notify({
+          title: '警告',
+          message: '亲,请认真填写!',
+          type: 'warning',
+        })
+      } else {
+        let dataList = {
+          name: this.number,
+          pwd: md5(this.password),
+        }
+        login(dataList).then((res) => {
+          if (res.status == 200) {
+            this.$notify({
+              title: '成功',
+              message: '登录成功',
+              type: 'success',
+            })
+            this.$router.push('/home/main/introduce')
+          } else {
+            this.$notify({
+              title: '错误',
+              message: '出问题了,稍等一会',
+              type: 'error',
+            })
+          }
+        })
+      }
     },
   },
 }

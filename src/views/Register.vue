@@ -251,6 +251,8 @@
 </template>
 
 <script>
+import { userscreate } from '../api/create'
+import md5 from 'md5'
 export default {
   name: 'Register',
   data() {
@@ -306,6 +308,15 @@ export default {
     inputThree() {
       if (this.email != undefined && this.email.length == 0) {
         this.$refs.Two.placeholder = '请输入邮箱'
+      } else {
+        const reg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        if (!reg.test(this.email)) {
+          this.$notify({
+            title: '警告',
+            message: '亲,邮箱格式填写不满足!',
+            type: 'warning',
+          })
+        }
       }
     },
     /* 密码获得焦点事件 */
@@ -319,6 +330,14 @@ export default {
     inputFive() {
       if (this.password != undefined && this.password.length == 0) {
         this.$refs.Three.placeholder = '请输入第一次密码'
+      } else {
+        if (this.password.length < 6 || this.password.length > 18) {
+          this.$notify({
+            title: '警告',
+            message: '亲,密码需在6-18位奥!',
+            type: 'warning',
+          })
+        }
       }
     },
     /* 第二次密码获得焦点事件 */
@@ -356,8 +375,23 @@ export default {
           type: 'warning',
         })
       } else {
-        alert('注册成功')
-        this.$router.push('/home/main/introduce')
+        let dataList = {
+          name: this.user,
+          pwd: md5(this.password),
+          pwdtwo: md5(5),
+          email: this.email,
+        }
+        //注册接口
+        userscreate(dataList).then((res) => {
+          if (res.status == 201) {
+            this.$notify({
+              title: '警告',
+              message: res.msg,
+              type: 'success',
+            })
+            this.$router.push('/singup')
+          }
+        })
       }
     },
   },

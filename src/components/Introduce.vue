@@ -8,7 +8,7 @@
 
 <script>
 import ListItem from './ListItem'
-import { userslist } from '../api/create'
+import {} from '../api/create'
 export default {
   name: 'Introduce',
   components: {
@@ -21,11 +21,7 @@ export default {
     this.getList()
   },
   methods: {
-    async getList() {
-      userslist().then((response) => {
-        console.log(response)
-      })
-    },
+    async getList() {},
   },
 }
 </script>
