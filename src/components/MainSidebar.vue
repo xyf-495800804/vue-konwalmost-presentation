@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="box">
     <!-- 回答问题，发视频等card -->
     <el-card class="box-card">
       <!-- 引入字体图标组件 -->
@@ -322,12 +322,10 @@
         </div>
       </div>
     </el-card>
-    <div class="sticky">
-      <!-- 我的收藏 我关注的问题 我的邀请 -->
-      <nav-link></nav-link>
-      <!-- Fake指南,应用.工作.申请开通链接 -->
-      <sidebar-footer></sidebar-footer>
-    </div>
+    <!-- 我的收藏 我关注的问题 我的邀请 -->
+    <nav-link class="box-navlink"></nav-link>
+    <!-- Fake指南,应用.工作.申请开通链接 -->
+    <sidebar-footer class="box-footer"></sidebar-footer>
   </div>
 </template>
 
@@ -353,51 +351,55 @@ export default {
 a.router-link-exact-active.router-link-active {
   flex: 1;
 }
-.box-card {
-  margin-bottom: 0.5rem;
-  .header-card {
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid #f6f6f6;
-    display: flex;
-    .GlobalWrite-navIcon {
-      margin-bottom: 0.6rem;
-      color: #8590a6;
-    }
-    .GlobalWrite-topTitle {
-      font-size: 0.6rem;
-      margin: 0 auto;
-    }
-  }
-  .draft .nav-link {
-    margin-top: 0.5rem;
-    .text {
+
+.box {
+  width: 100%;
+  .box-card {
+    margin-bottom: 0.5rem;
+    .header-card {
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #f6f6f6;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-  }
-  .center-card {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    .center-card-img {
-      width: 276px;
-      height: 2.2rem;
-      img {
-        width: 100%;
-        height: 100%;
+      .GlobalWrite-navIcon {
+        margin-bottom: 0.6rem;
+        color: #8590a6;
+      }
+      .GlobalWrite-topTitle {
+        font-size: 0.6rem;
+        margin: 0 auto;
       }
     }
-    .center-card-box {
-      display: flex;
-      flex-wrap: wrap;
+    .draft .nav-link {
       margin-top: 0.5rem;
-      .iconS {
-        flex: 33.3%;
-        margin-bottom: 1.25rem;
-        .iconS-box {
-          display: flex;
-          flex-direction: column;
+      .text {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+    .center-card {
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      .center-card-img {
+        width: 276px;
+        height: 2.2rem;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .center-card-box {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 0.5rem;
+        .iconS {
+          flex: 33.3%;
+          margin-bottom: 1.25rem;
+          .iconS-box {
+            display: flex;
+            flex-direction: column;
+          }
         }
       }
     }

@@ -10,6 +10,10 @@ module.exports = {
         pathRewrite: {
           "^/api": "/mock"
         }
+      },
+      "/users": {
+        changeOrigin: true,
+        target: "http://127.0.0.1:3000"
       }
     }
   }

@@ -67,8 +67,6 @@ export default {
 }
 
 .draft {
-  /* position: sticky;
-  top: 75px; */
   width: 100%;
   height: 100%;
   .box-card {

@@ -8,6 +8,7 @@
 
 <script>
 import ListItem from './ListItem'
+import { userslist } from '../api/create'
 export default {
   name: 'Introduce',
   components: {
@@ -21,8 +22,9 @@ export default {
   },
   methods: {
     async getList() {
-      const { data } = await this.$axios.get('/api/author.json')
-      console.log(data)
+      userslist().then((response) => {
+        console.log(response)
+      })
     },
   },
 }

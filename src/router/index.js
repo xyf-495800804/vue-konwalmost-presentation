@@ -6,6 +6,7 @@ import Introduce from "../components/Introduce.vue";
 import Attention from "../components/Attention.vue";
 import HotTopic from "../components/HotTopic.vue";
 import SingUp from "../views/SingUp.vue";
+import Register from "../views/Register.vue";
 
 Vue.use(VueRouter);
 
@@ -18,6 +19,11 @@ const routes = [
     path: "/singup",
     name: "SingUp",
     component: SingUp
+  },
+  {
+    path: "/register",
+    name: "Register",
+    component: Register
   },
   {
     path: "/home",
