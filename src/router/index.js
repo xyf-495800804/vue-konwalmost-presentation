@@ -7,6 +7,7 @@ import Attention from "../components/Attention.vue";
 import HotTopic from "../components/HotTopic.vue";
 import SingUp from "../views/SingUp.vue";
 import Register from "../views/Register.vue";
+import Editor from "../views/Editor.vue";
 
 Vue.use(VueRouter);
 
@@ -24,6 +25,11 @@ const routes = [
     path: "/register",
     name: "Register",
     component: Register
+  },
+  {
+    path: "/editor/:acticleId",
+    name: "Editor",
+    component: Editor
   },
   {
     path: "/home",

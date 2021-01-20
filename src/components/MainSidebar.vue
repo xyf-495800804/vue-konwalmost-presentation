@@ -69,7 +69,7 @@
         </router-link>
         <!-- 发视频结束 -->
         <!-- 写文章开始 -->
-        <router-link to="">
+        <router-link to="/editor/0">
           <icon-button>
             <template slot="iconButton">
               <svg

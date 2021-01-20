@@ -15,6 +15,9 @@ import "./assets/css/public.css";
 /* 引入axios */
 import axios from "axios";
 Vue.prototype.$axios = axios;
+// 引入拿到cookies组件
+import VueCookies from "vue-cookies";
+Vue.use(VueCookies);
 
 Vue.config.productionTip = false;
 

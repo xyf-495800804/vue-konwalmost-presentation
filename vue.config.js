@@ -14,6 +14,14 @@ module.exports = {
       "/users": {
         changeOrigin: true,
         target: "http://127.0.0.1:3000"
+      },
+      "/articles": {
+        changeOrigin: true,
+        target: "http://127.0.0.1:3000"
+      },
+      "/imgs": {
+        changeOrigin: true,
+        target: "http://127.0.0.1:3000"
       }
     }
   }
