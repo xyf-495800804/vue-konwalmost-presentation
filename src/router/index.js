@@ -8,6 +8,7 @@ import HotTopic from "../components/HotTopic.vue";
 import SingUp from "../views/SingUp.vue";
 import Register from "../views/Register.vue";
 import Editor from "../views/Editor.vue";
+import DetailArticles from "../views/DetailsArticle.vue";
 
 Vue.use(VueRouter);
 
@@ -30,6 +31,11 @@ const routes = [
     path: "/editor/:acticleId",
     name: "Editor",
     component: Editor
+  },
+  {
+    path: "/article/:id",
+    name: "DetailArticles",
+    component: DetailArticles
   },
   {
     path: "/home",

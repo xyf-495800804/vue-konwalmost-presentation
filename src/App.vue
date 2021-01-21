@@ -18,7 +18,7 @@ export default {
           scale: 1,
         },
         display: {
-          position: 'left',
+          position: 'right',
           width: 150,
           height: 300,
           hOffset: 0,

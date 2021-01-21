@@ -130,6 +130,7 @@ export default {
           })
           this.title = ''
           this.content = ''
+          this.$router.push('/home/main/introduce')
         } else {
           this.$notify({
             title: '错误',
@@ -154,11 +155,11 @@ export default {
         const url = `${imgDec}${response.fileName}`
         const fake = `http://localhost:3000/images/${response.fileName}`
         this.imgUrl = fake
-        this.$refs.myQuillEditor.$refs.textEditor.quill.insertEmbed(
+        /* this.$refs.myQuillEditor.$refs.textEditor.quill.insertEmbed(
           this.$refs.myQuillEditor.$refs.textEditor.quill.getSelection(),
           'image',
           fake
-        )
+        ) */
       }
     },
   },

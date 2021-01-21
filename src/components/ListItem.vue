@@ -4,17 +4,21 @@
       class="list-item-card"
       v-for="(item,index) in IntroduceList"
       :key="index"
+      v-loading="loading"
     >
       <!-- 标题 -->
       <div class="tittle">
-        <h2>{{item.titele}}</h2>
+        <h2>{{item.title}}</h2>
       </div>
       <!-- 展示简介 -->
       <div class="shortCut">
         <!-- 图片 -->
-        <div class="cover">
+        <div
+          class="cover"
+          v-show='item.cover'
+        >
           <img
-            src="../assets/img/mb.jpg"
+            :src="item.cover"
             alt=""
           >
         </div>
@@ -23,13 +27,15 @@
 
           <span
             class="experct-html"
-            v-html="item.content"
-          ></span>
-          <el-button
-            class="btn-no-padding"
-            type="text"
-          >阅读全文 <span class="el-icon-arrow-down"></span></el-button>
-
+            v-html="$options.filters.ellipsis(item.content)"
+          >
+          </span>
+          <router-link :to="{name:'DetailArticles',params:{id:item.id}}">
+            <el-button
+              class="btn-no-padding"
+              type="text"
+            >阅读全文 <span class="el-icon-arrow-down"></span></el-button>
+          </router-link>
         </div>
       </div>
       <!-- 图标 -->
@@ -40,112 +46,40 @@
 
 <script>
 import ListItemActions from './ListItemActions'
+import { getlistArticles } from '../api/save'
 export default {
   name: 'ListItem',
   data() {
     return {
-      IntroduceList: [
-        {
-          titele:
-            '【自制】你的下一个显示器,可能是个充电宝??DIY超迷你便携显示器【硬核】',
-          imgSrc: '../assets/img/mb.jpg',
-          content:
-            'May： 是我妹妹！！！ 从小就好看！从小就特别喜欢拍照，家里当时好多好多她拍的大头贴，白眼.jpg ，各种被人家要，被好多小男生暗恋明恋，从小就是班花，跟她出门百分之九十都会被夸，被问眼睛是割的吗？头发',
-        },
-        {
-          titele:
-            '【自制】你的下一个显示器,可能是个充电宝??DIY超迷你便携显示器【硬核】',
-          imgSrc: '../assets/img/mb.jpg',
-          content:
-            'May： 是我妹妹！！！ 从小就好看！从小就特别喜欢拍照，家里当时好多好多她拍的大头贴，白眼.jpg ，各种被人家要，被好多小男生暗恋明恋，从小就是班花，跟她出门百分之九十都会被夸，被问眼睛是割的吗？头发',
-        },
-        {
-          titele:
-            '【自制】你的下一个显示器,可能是个充电宝??DIY超迷你便携显示器【硬核】',
-          imgSrc: '../assets/img/mb.jpg',
-          content:
-            'May： 是我妹妹！！！ 从小就好看！从小就特别喜欢拍照，家里当时好多好多她拍的大头贴，白眼.jpg ，各种被人家要，被好多小男生暗恋明恋，从小就是班花，跟她出门百分之九十都会被夸，被问眼睛是割的吗？头发',
-        },
-        {
-          titele:
-            '【自制】你的下一个显示器,可能是个充电宝??DIY超迷你便携显示器【硬核】',
-          imgSrc: '../assets/img/mb.jpg',
-          content:
-            'May： 是我妹妹！！！ 从小就好看！从小就特别喜欢拍照，家里当时好多好多她拍的大头贴，白眼.jpg ，各种被人家要，被好多小男生暗恋明恋，从小就是班花，跟她出门百分之九十都会被夸，被问眼睛是割的吗？头发',
-        },
-        {
-          titele:
-            '【自制】你的下一个显示器,可能是个充电宝??DIY超迷你便携显示器【硬核】',
-          imgSrc: '../assets/img/mb.jpg',
-          content:
-            'May： 是我妹妹！！！ 从小就好看！从小就特别喜欢拍照，家里当时好多好多她拍的大头贴，白眼.jpg ，各种被人家要，被好多小男生暗恋明恋，从小就是班花，跟她出门百分之九十都会被夸，被问眼睛是割的吗？头发',
-        },
-        {
-          titele:
-            '【自制】你的下一个显示器,可能是个充电宝??DIY超迷你便携显示器【硬核】',
-          imgSrc: '../assets/img/mb.jpg',
-          content:
-            'May： 是我妹妹！！！ 从小就好看！从小就特别喜欢拍照，家里当时好多好多她拍的大头贴，白眼.jpg ，各种被人家要，被好多小男生暗恋明恋，从小就是班花，跟她出门百分之九十都会被夸，被问眼睛是割的吗？头发',
-        },
-        {
-          titele:
-            '【自制】你的下一个显示器,可能是个充电宝??DIY超迷你便携显示器【硬核】',
-          imgSrc: '../assets/img/mb.jpg',
-          content:
-            'May： 是我妹妹！！！ 从小就好看！从小就特别喜欢拍照，家里当时好多好多她拍的大头贴，白眼.jpg ，各种被人家要，被好多小男生暗恋明恋，从小就是班花，跟她出门百分之九十都会被夸，被问眼睛是割的吗？头发',
-        },
-        {
-          titele:
-            '【自制】你的下一个显示器,可能是个充电宝??DIY超迷你便携显示器【硬核】',
-          imgSrc: '../assets/img/mb.jpg',
-          content:
-            'May： 是我妹妹！！！ 从小就好看！从小就特别喜欢拍照，家里当时好多好多她拍的大头贴，白眼.jpg ，各种被人家要，被好多小男生暗恋明恋，从小就是班花，跟她出门百分之九十都会被夸，被问眼睛是割的吗？头发',
-        },
-        {
-          titele:
-            '【自制】你的下一个显示器,可能是个充电宝??DIY超迷你便携显示器【硬核】',
-          imgSrc: '../assets/img/mb.jpg',
-          content:
-            'May： 是我妹妹！！！ 从小就好看！从小就特别喜欢拍照，家里当时好多好多她拍的大头贴，白眼.jpg ，各种被人家要，被好多小男生暗恋明恋，从小就是班花，跟她出门百分之九十都会被夸，被问眼睛是割的吗？头发',
-        },
-        {
-          titele:
-            '【自制】你的下一个显示器,可能是个充电宝??DIY超迷你便携显示器【硬核】',
-          imgSrc: '../assets/img/mb.jpg',
-          content:
-            'May： 是我妹妹！！！ 从小就好看！从小就特别喜欢拍照，家里当时好多好多她拍的大头贴，白眼.jpg ，各种被人家要，被好多小男生暗恋明恋，从小就是班花，跟她出门百分之九十都会被夸，被问眼睛是割的吗？头发',
-        },
-        {
-          titele:
-            '【自制】你的下一个显示器,可能是个充电宝??DIY超迷你便携显示器【硬核】',
-          imgSrc: '../assets/img/mb.jpg',
-          content:
-            'May： 是我妹妹！！！ 从小就好看！从小就特别喜欢拍照，家里当时好多好多她拍的大头贴，白眼.jpg ，各种被人家要，被好多小男生暗恋明恋，从小就是班花，跟她出门百分之九十都会被夸，被问眼睛是割的吗？头发',
-        },
-        {
-          titele:
-            '【自制】你的下一个显示器,可能是个充电宝??DIY超迷你便携显示器【硬核】',
-          imgSrc: '../assets/img/mb.jpg',
-          content:
-            'May： 是我妹妹！！！ 从小就好看！从小就特别喜欢拍照，家里当时好多好多她拍的大头贴，白眼.jpg ，各种被人家要，被好多小男生暗恋明恋，从小就是班花，跟她出门百分之九十都会被夸，被问眼睛是割的吗？头发',
-        },
-      ],
+      loading: true,
+      IntroduceList: [],
     }
   },
+  watch: {
+    //路由发生变化重新获取数据
+    // $router: 'fetchDate',
+  },
   mounted() {
-    /*  this.getList() */
+    this.fetchDate()
   },
   methods: {
     /* 获取数据事件 */
-    /*  getList() {
-      for (let i = 0; i < 10; i++) {
-        this.IntroduceList.push()
-      }
-    }, */
+    fetchDate() {
+      this.loading = true
+      getlistArticles().then((res) => {
+        if (res.status === 200) {
+          this.loading = false
+          this.IntroduceList = res.data
+        }
+      })
+    },
   },
   //   过滤器限制文字省略
   filters: {
     ellipsis(value) {
+      // js利用正则解析html
+      //   /<[^>]+>/g
+      //   let valueone = value.replace(/<[^>]+>/g, '')
       if (!value) return ''
       if (value.length > 100) {
         return value.slice(0, 100) + '...'
@@ -184,8 +118,8 @@ export default {
       margin-top: 10px;
       display: inline-flex;
       .cover {
-        width: 190px;
-        height: 105px;
+        width: 280px;
+        height: 100%;
         margin-top: -2px;
         margin-right: 18px;
         margin-bottom: 4px;
@@ -198,8 +132,8 @@ export default {
         }
       }
       .experct {
-        width: 446px;
-        height: 99.6px;
+        width: 100%;
+        height: 100%;
         font-family: -apple-system, BlinkMacSystemFont, Helvetica Neue,
           PingFang SC, Microsoft YaHei, Source Han Sans SC, Noto Sans CJK SC,
           WenQuanYi Micro Hei, sans-serif;

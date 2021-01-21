@@ -12,7 +12,7 @@
         <el-button
           v-else
           size="mini"
-          :class="[el-icon-caret-top,{'actions-btn':changeStyleOne&&changeThree}]"
+          :class="[{'actions-btn':changeStyleOne&&changeThree}]"
           @click="handleApprovaltwo"
         >已赞同</el-button>
         <el-button
