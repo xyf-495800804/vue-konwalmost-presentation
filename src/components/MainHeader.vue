@@ -1,6 +1,15 @@
 <template>
   <!-- 头部开始 -->
   <header class="main-header">
+    <!-- 提问弹出层 -->
+    <el-dialog
+      title="新的问题"
+      :visible.sync="askModelVisiable"
+      :modal-append-to-body="false"
+    >
+      <!-- 调用askmodel组件,绑定changeaskmodelVisible方法 -->
+      <ask-model @changeAskModelVisiable="changeAskModelVisiable"></ask-model>
+    </el-dialog>
     <div class="header-content">
       <router-link :to="{ name: 'Home' }">
         <!-- 左上角logo,单击跳转回首页 -->
@@ -45,6 +54,7 @@
         round
         type="primary"
         class="question"
+        @click="askModelDisable"
       >提问</el-button>
       <div class="userInfo">
         <!-- 消息提示icon -->
@@ -100,6 +110,7 @@
 <script>
 import { checkLogin } from '../api/checkLogin'
 import { logout } from '../api/logout'
+import AskModel from '../components/AskModel'
 export default {
   name: 'MainHeader',
   data() {
@@ -108,8 +119,10 @@ export default {
       keywords: '',
       isLogin: false,
       name: '', //用户名
+      askModelVisiable: false, //dialog隐藏展示变量
     }
   },
+  components: { AskModel },
   mounted() {
     //检查cookies事件
     this.inspectCookies()
@@ -160,6 +173,14 @@ export default {
           this.isLogin = false
         }
       })
+    },
+    //修改dialog隐藏展示
+    changeAskModelVisiable(status) {
+      //修改askModelVisiable内容
+      this.askModelVisiable = status
+    },
+    askModelDisable() {
+      this.askModelVisiable = true
     },
   },
 }

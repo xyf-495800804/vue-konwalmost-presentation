@@ -9,6 +9,8 @@ import SingUp from "../views/SingUp.vue";
 import Register from "../views/Register.vue";
 import Editor from "../views/Editor.vue";
 import DetailArticles from "../views/DetailsArticle.vue";
+import DetailQuestions from "../views/DetailsQuestions.vue";
+import QuestionList from "../views/QuestionList.vue";
 
 Vue.use(VueRouter);
 
@@ -36,6 +38,16 @@ const routes = [
     path: "/article/:id",
     name: "DetailArticles",
     component: DetailArticles
+  },
+  {
+    path: "/question/answer",
+    name: "QuestionList",
+    component: QuestionList
+  },
+  {
+    path: "/question/:id",
+    name: "detailsQuestions",
+    component: DetailQuestions
   },
   {
     path: "/home",

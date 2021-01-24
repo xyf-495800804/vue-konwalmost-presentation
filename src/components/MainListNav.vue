@@ -50,7 +50,7 @@ export default {
     },
     fetch() {
       var cur_path = this.$route.path //获取当前路由
-      var routers = this.$router.options.routes // 获取路由对象
+      //   var routers = this.$router.options.routes // 获取路由对象
       if (cur_path == '/home/main/introduce') {
         this.activeIndex = '1'
       } else if (cur_path == '/home/main/attention') {

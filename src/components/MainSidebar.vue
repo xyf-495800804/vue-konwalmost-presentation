@@ -5,7 +5,7 @@
       <!-- 引入字体图标组件 -->
       <div class="header-card">
         <!-- 回答问题开始 -->
-        <router-link to="">
+        <router-link to="/question/answer">
           <icon-button>
             <template slot="iconButton">
               <svg
