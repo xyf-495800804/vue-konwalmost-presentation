@@ -44,14 +44,15 @@ export default {
       discription: '', //描述
       excerpt: '', //简介
       placeHolder: '输入问题背景、条件等详情信息(选填)',
+      id: '',
     }
   },
   mounted() {
     //首先判断是修改问题还是创建问题
-    if (!_.isEmpty(this.oldItem)) {
+    if (this.oldItem != undefined && this.oldItem) {
       // 若是修改问题
-      this.title = this.oldItem.title
-      this.discription = this.oldItem.discription
+      this.title = this.title
+      this.discription = this.discription
       this.$refs.richtext.updateContent(this.discription)
     }
   },
@@ -63,9 +64,9 @@ export default {
         contentText.length > 100 ? contentText.slice(0, 100) : contentText
     },
     relaseQuestion() {
-      if (!_.isEmpty(this.oldItem)) {
+      if (this.oldItem) {
         //更新
-        this.updateContent()
+        this.updateQuestion()
       } else {
         //创建
         this.createQuestion()
@@ -107,7 +108,20 @@ export default {
       })
     },
     //更新问题的接口
-    updateQuestion() {},
+    updateQuestion() {
+      let dataList = {
+        questionId: this.oldItem.id,
+        content: this.discription,
+        userId: this.oldItem.creatorId,
+        excerpt: this.excerpt,
+        title: this.title,
+      }
+      updateQuestions(dataList).then((res) => {
+        this.$parent.$parent.changeAskModelVisiable(false)
+        this.$parent.$parent.getQuestion()
+        this.reset
+      })
+    },
   },
 }
 </script>

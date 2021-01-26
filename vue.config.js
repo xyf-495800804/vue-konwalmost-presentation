@@ -26,6 +26,10 @@ module.exports = {
       "/questions": {
         changeOrigin: true,
         target: "http://127.0.0.1:3000"
+      },
+      "/answer": {
+        changeOrigin: true,
+        target: "http://127.0.0.1:3000"
       }
     }
   }

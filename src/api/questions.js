@@ -10,7 +10,7 @@ export function updateQuestions(data) {
   return request("/questions/update", data, "POST");
 }
 
-// 查询提问接口
+// 查询列表接口
 export function getQuestions(data) {
   return request("/questions/get", data, "POST");
 }

@@ -87,13 +87,13 @@ export default {
     padding-top: 70px;
     -webkit-box-shadow: 0 1px 3px rgb(18 18 18 / 10%);
     box-shadow: 0 1px 3px rgb(18 18 18 / 10%);
-    background: white;
     .article-wrapper-max {
-      padding: 16px 0;
-      max-width: 1000px;
+      padding: 16px 35px;
+      max-width: 1200px;
       min-width: 1000px;
       margin: auto;
       text-align: left;
+      background: white;
     }
   }
 }

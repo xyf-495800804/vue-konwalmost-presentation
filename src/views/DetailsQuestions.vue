@@ -20,16 +20,38 @@
         <div class="good">
           关注数:<span>{{number}}</span>
         </div>
+        <div class="updata">
+          <el-button
+            v-show="zzid==questionsData.creatorId"
+            size="small"
+            class="updata-btn"
+            @click="updataQuestion($route.params.id)"
+          >更新问题</el-button>
+        </div>
+        <!-- 提问弹出层 -->
+        <el-dialog
+          class="dialog"
+          title="更新问题"
+          :visible.sync="askModelVisiable"
+          :modal-append-to-body="false"
+        >
+          <!-- 调用askmodel组件,绑定changeaskmodelVisible方法 -->
+          <ask-model
+            @changeAskModelVisiable="changeAskModelVisiable"
+            :oldItem="oldItem"
+            ref="askModel"
+          ></ask-model>
+        </el-dialog>
       </div>
     </div>
     <!--  -->
     <div class="questions">
       <h4
-        v-if="richDisabled"
+        v-if="richDisabled&&answerList.length==0"
         @click="changeRichDisabled"
       >暂时还未回答,开始写第一个回答</h4>
       <rich-text-editor
-        v-else
+        v-if="richDisabled&&answerList.length!==0"
         ref="myQuillEditor"
         :content="discription"
         :placeHolder="placeHolder"
@@ -37,7 +59,7 @@
       ></rich-text-editor>
       <div
         class="footer"
-        v-show="!richDisabled"
+        v-if="richDisabled&&answerList.length!==0"
       >
         <!-- 确定按钮 -->
         <el-button
@@ -50,6 +72,27 @@
           @click="close"
         >取消</el-button>
       </div>
+      <div
+        class="questions-answers"
+        v-show="answerList!=undefined&&answerList"
+        v-for="(item,index) in answerList"
+      >
+        <h3 v-html="item.content"></h3>
+        <div class="questions-answers-btn">
+          <el-button
+            v-show="$cookies.get('id')"
+            size="mini"
+            class="updata-answer"
+            @click="updataAnswers"
+          >更新回答</el-button>
+          <el-button
+            v-show="$cookies.get('id')"
+            size="mini"
+            class="delete-answer"
+            @click="delterAnswers"
+          >删除回答</el-button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -58,7 +101,9 @@
 import MainHeader from '../components/MainHeader'
 import listItemQuestion from '../components/listItemQuestion'
 import RichTextEditor from '../components/RichTextEditor'
-import { getQuestions, getListQuestions } from '../api/questions.js'
+import AskModel from '../components/AskModel'
+import { getQuestions } from '../api/questions.js'
+import { createAnswers, getIdAnswers } from '../api/answers'
 
 export default {
   name: 'DetailsQuestions',
@@ -66,6 +111,7 @@ export default {
     MainHeader,
     listItemQuestion,
     RichTextEditor,
+    AskModel,
   },
   data() {
     return {
@@ -77,6 +123,12 @@ export default {
       placeHolder: '填写你的回答吧!',
       //默认显示h4
       richDisabled: true,
+      askModelVisiable: false, //dialog隐藏展示变量
+      oldItem: {},
+      zzid: '',
+      discription: '',
+      //回答数组列表
+      answerList: [],
     }
   },
   mounted() {
@@ -90,26 +142,73 @@ export default {
         contentText.length > 100 ? contentText.slice(0, 100) : contentText
     },
     getQuestion() {
+      this.zzid = this.$cookies.get('id')
       let dataList = {
         questionsId: this.$route.params.id,
       }
-      getQuestions().then((res) => {
-        console.log(res)
+      getQuestions(dataList).then((res) => {
         if (res.status === 200) {
           this.questionsData = res.data
+          let dataList = {
+            id: this.$route.params.id,
+          }
+          getIdAnswers(dataList).then((res) => {
+            this.answerList = res.data
+          })
         }
       })
     },
+
     //切换填写框
     changeRichDisabled() {
       this.richDisabled = false
     },
     // 发送回答事件
-    relaseQuestion() {},
+    relaseQuestion() {
+      let dataList = {
+        creatorId: this.questionsData.creatorId,
+        targetId: this.$route.params.id,
+        content: this.discription,
+        excerpt: this.excerpt,
+      }
+      createAnswers(dataList).then((res) => {
+        if (res.status === 200) {
+          this.richDisabled = true
+          //清空填写的输入框
+          this.$refs.myQuillEditor.value = ''
+          //立即更新
+          let dataList = {
+            id: this.$route.params.id,
+          }
+          getIdAnswers(dataList).then((res) => {
+            this.answerList = res.data
+          })
+        }
+      })
+    },
     //关闭事件
     close() {
       this.richDisabled = true
     },
+    //更新问题事件
+    updataQuestion(_id) {
+      this.askModelVisiable = true
+      this.oldItem = {
+        id: _id,
+        creatorId: this.questionsData.creatorId,
+        excerpt: this.questionsData.excerpt,
+      }
+    },
+    //修改dialog隐藏展示
+    changeAskModelVisiable(status) {
+      //修改askModelVisiable内容
+      this.askModelVisiable = status
+      this.$refs.askModel.reset()
+    },
+    //更新回答事件
+    updataAnswers() {},
+    //删除回答事件
+    delterAnswers() {},
   },
 }
 </script>
@@ -123,22 +222,36 @@ export default {
     margin-bottom: 25px;
     -webkit-box-shadow: 0 1px 3px rgb(18 18 18 / 10%);
     box-shadow: 0 1px 3px rgb(18 18 18 / 10%);
-    background: white;
     .detail-question-wrapper-max {
+      position: relative;
       padding: 16px 0;
       max-width: 1000px;
       min-width: 1000px;
+      padding: 40px;
       margin: auto;
       text-align: left;
+      background: white;
       .good {
         position: absolute;
-        top: 90px;
-        right: 325px;
+        top: 15px;
+        right: 140px;
         color: #8590a6;
         span {
           vertical-align: middle;
           color: #121212;
         }
+      }
+      .updata {
+        position: absolute;
+        top: 60px;
+        right: 140px;
+        .updata-btn {
+          background: #0066ff;
+          color: #ffffff;
+        }
+      }
+      .dialog {
+        text-align: center !important;
       }
     }
   }
@@ -153,6 +266,22 @@ export default {
     border-radius: 2px;
     .footer {
       margin-top: 20px;
+    }
+    .questions-answers {
+      text-align: left;
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      .questions-answers-btn {
+        .updata-answer {
+          background: #0066ff;
+          color: #ffffff;
+        }
+        .delete-answer {
+          background: #0066ff;
+          color: #ffffff;
+        }
+      }
     }
   }
 }
