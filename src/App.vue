@@ -8,11 +8,10 @@
 import { L2Dwidget } from 'live2d-widget'
 export default {
   name: 'App',
-  created() {
+  /*  created() {
     setTimeout(function () {
       L2Dwidget.init({
         model: {
-          /*  https://cdn.jsdelivr.net/gh/wangsrGit119/wangsr-image-bucket/L2Dwidget/live2d-widget-model-haruto/assets/haruto.model.json */
           jsonPath:
             'https://cdn.jsdelivr.net/gh/wangsrGit119/wangsr-image-bucket/L2Dwidget/live2d-widget-model-haruto/assets/haruto.model.json ',
           scale: 1,
@@ -35,7 +34,7 @@ export default {
         },
       })
     }, 100)
-  },
+  }, */
 }
 </script>
 

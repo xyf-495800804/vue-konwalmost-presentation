@@ -3,12 +3,20 @@
  */
 
 import Mock from "mockjs";
-import author from "./author.json";
+// import author from "./author.json";
+import city from "./city.json";
 
 /* 返回作者的接口 */
-Mock.mock("/author", {
+// Mock.mock("/author", "get", {
+//   code: 200,
+//   data: author,
+//   message: "成功"
+// });
+
+//返回城市接口
+Mock.mock("/citys", "get", {
   code: 200,
-  data: author,
+  data: city,
   message: "成功"
 });
 

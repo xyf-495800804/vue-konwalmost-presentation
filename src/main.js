@@ -18,6 +18,8 @@ Vue.prototype.$axios = axios;
 // 引入拿到cookies组件
 import VueCookies from "vue-cookies";
 Vue.use(VueCookies);
+//引入mockjs
+import "../public/mock/mockServer";
 
 Vue.config.productionTip = false;
 

@@ -65,6 +65,9 @@ export default {
   methods: {
     /* 获取数据事件 */
     fetchDate() {
+      this.$axios.get('/citys').then((res) => {
+        console.log(res)
+      })
       this.loading = true
       getlistArticles().then((res) => {
         if (res.status === 200) {
