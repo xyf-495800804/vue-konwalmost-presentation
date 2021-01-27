@@ -15,7 +15,12 @@ export function updataAnswers(data) {
   return request("/answer/updata", data, "POST");
 }
 
-//根据id查找问题
+//根据questions_id查找问题
 export function getIdAnswers(data) {
   return request("/answer/getId", data, "POST");
+}
+
+// 根据回答的id查找
+export function getOnlyIdAnswers(data) {
+  return request("/answer/getOnlyId", data, "POST");
 }

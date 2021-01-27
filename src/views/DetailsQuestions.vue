@@ -51,7 +51,7 @@
         @click="changeRichDisabled"
       >暂时还未回答,开始写第一个回答</h4>
       <rich-text-editor
-        v-if="richDisabled&&answerList.length!==0"
+        v-if="!richDisabled||answerList.length!==0"
         ref="myQuillEditor"
         :content="discription"
         :placeHolder="placeHolder"
@@ -59,7 +59,7 @@
       ></rich-text-editor>
       <div
         class="footer"
-        v-if="richDisabled&&answerList.length!==0"
+        v-if="!richDisabled||answerList.length!==0"
       >
         <!-- 确定按钮 -->
         <el-button
@@ -80,16 +80,16 @@
         <h3 v-html="item.content"></h3>
         <div class="questions-answers-btn">
           <el-button
-            v-show="$cookies.get('id')"
+            v-show="item.creatorId==$cookies.get('id')"
             size="mini"
             class="updata-answer"
-            @click="updataAnswers"
+            @click="updataAnswers(item.id,item.creatorId)"
           >更新回答</el-button>
           <el-button
-            v-show="$cookies.get('id')"
+            v-show="item.creatorId==$cookies.get('id')"
             size="mini"
             class="delete-answer"
-            @click="delterAnswers"
+            @click="delterAnswers(item.id,item.creatorId)"
           >删除回答</el-button>
         </div>
       </div>
@@ -103,7 +103,13 @@ import listItemQuestion from '../components/listItemQuestion'
 import RichTextEditor from '../components/RichTextEditor'
 import AskModel from '../components/AskModel'
 import { getQuestions } from '../api/questions.js'
-import { createAnswers, getIdAnswers } from '../api/answers'
+import {
+  createAnswers,
+  getIdAnswers,
+  deleteAnswers,
+  getOnlyIdAnswers,
+  updataAnswers,
+} from '../api/answers'
 
 export default {
   name: 'DetailsQuestions',
@@ -129,6 +135,9 @@ export default {
       discription: '',
       //回答数组列表
       answerList: [],
+      updataId: '',
+      //更新的列表
+      updataList: {},
     }
   },
   mounted() {
@@ -165,26 +174,52 @@ export default {
     },
     // 发送回答事件
     relaseQuestion() {
-      let dataList = {
-        creatorId: this.questionsData.creatorId,
-        targetId: this.$route.params.id,
-        content: this.discription,
-        excerpt: this.excerpt,
-      }
-      createAnswers(dataList).then((res) => {
-        if (res.status === 200) {
-          this.richDisabled = true
-          //清空填写的输入框
-          this.$refs.myQuillEditor.value = ''
-          //立即更新
-          let dataList = {
-            id: this.$route.params.id,
-          }
-          getIdAnswers(dataList).then((res) => {
-            this.answerList = res.data
-          })
+      if (this.updataId) {
+        let dataList = {
+          creatorId: this.updataList.creatorId,
+          answerId: this.updataId,
+          content: this.discription,
+          excerpt: this.excerpt,
         }
-      })
+        updataAnswers(dataList).then((res) => {
+          if (res.status === 200) {
+            this.$refs.myQuillEditor.value = ''
+            //立即更新
+            let dataList = {
+              id: this.$route.params.id,
+            }
+            getIdAnswers(dataList).then((res) => {
+              this.answerList = res.data
+            })
+            this.$notify({
+              title: '成功',
+              message: '回答修改成功',
+              type: 'success',
+            })
+          }
+        })
+      } else {
+        let dataList = {
+          creatorId: this.$cookies.get('id'),
+          targetId: this.$route.params.id,
+          content: this.discription,
+          excerpt: this.excerpt,
+        }
+        createAnswers(dataList).then((res) => {
+          if (res.status === 200) {
+            this.richDisabled = true
+            //清空填写的输入框
+            this.$refs.myQuillEditor.value = ''
+            //立即更新
+            let dataList = {
+              id: this.$route.params.id,
+            }
+            getIdAnswers(dataList).then((res) => {
+              this.answerList = res.data
+            })
+          }
+        })
+      }
     },
     //关闭事件
     close() {
@@ -206,9 +241,42 @@ export default {
       this.$refs.askModel.reset()
     },
     //更新回答事件
-    updataAnswers() {},
+    updataAnswers(_id, _creatorId) {
+      let dataList = {
+        id: _id,
+      }
+      getOnlyIdAnswers(dataList).then((res) => {
+        if (res.status === 200) {
+          let excerpt = res.data[0].excerpt
+          this.$refs.myQuillEditor.value = excerpt
+          this.updataId = res.data[0].id
+          this.updataList = res.data[0]
+        }
+      })
+    },
     //删除回答事件
-    delterAnswers() {},
+    delterAnswers(_id, _creatorId) {
+      let dataList = {
+        answerId: _id,
+        userId: _creatorId,
+      }
+      deleteAnswers(dataList).then((res) => {
+        if (res.status === 200) {
+          this.$notify({
+            title: '成功',
+            message: '回答删除成功',
+            type: 'success',
+          })
+          //立即更新
+          let dataList = {
+            id: this.$route.params.id,
+          }
+          getIdAnswers(dataList).then((res) => {
+            this.answerList = res.data
+          })
+        }
+      })
+    },
   },
 }
 </script>
@@ -272,6 +340,7 @@ export default {
       display: flex;
       flex-flow: row nowrap;
       justify-content: space-between;
+      margin-top: 20px;
       .questions-answers-btn {
         .updata-answer {
           background: #0066ff;
