@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { L2Dwidget } from 'live2d-widget'
+/* import { L2Dwidget } from 'live2d-widget' */
 export default {
   name: 'App',
   /*  created() {
