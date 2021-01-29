@@ -292,9 +292,8 @@ export default {
     box-shadow: 0 1px 3px rgb(18 18 18 / 10%);
     .detail-question-wrapper-max {
       position: relative;
-      padding: 16px 0;
-      max-width: 1000px;
-      min-width: 1000px;
+      max-width: 1185px;
+      min-width: 1185px;
       padding: 40px;
       margin: auto;
       text-align: left;
@@ -324,11 +323,11 @@ export default {
     }
   }
   .questions {
-    min-width: 1000px;
-    max-width: 1000px;
+    min-width: 1185px;
+    max-width: 1185px;
     margin: 0 auto;
     box-shadow: 0 1px 3px rgb(18 18 18 / 10%);
-    padding: 40px;
+    padding: 40px 40px 100px 40px;
     background: #fff;
     overflow: hidden;
     border-radius: 2px;

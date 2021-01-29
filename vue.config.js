@@ -30,6 +30,10 @@ module.exports = {
       "/answer": {
         changeOrigin: true,
         target: "http://127.0.0.1:3000"
+      },
+      "/comment": {
+        changeOrigin: true,
+        target: "http://127.0.0.1:3000"
       }
     }
   }

@@ -38,6 +38,9 @@
         <list-item-actions></list-item-actions>
       </div>
     </div>
+
+    <!-- 评论 -->
+    <commend-list></commend-list>
   </div>
 </template>
 
@@ -45,6 +48,7 @@
 import { getArticles } from '../api/save'
 import ListItemActions from '../components/ListItemActions'
 import MainHeader from '../components/MainHeader.vue'
+import CommendList from '../components/CommendList'
 export default {
   name: 'DetailArticle',
   data() {
@@ -57,6 +61,7 @@ export default {
   components: {
     ListItemActions,
     MainHeader,
+    CommendList,
   },
   mounted() {
     this.getArticle()
@@ -88,7 +93,7 @@ export default {
     -webkit-box-shadow: 0 1px 3px rgb(18 18 18 / 10%);
     box-shadow: 0 1px 3px rgb(18 18 18 / 10%);
     .article-wrapper-max {
-      padding: 16px 35px;
+      padding: 16px 35px 100px 35px;
       max-width: 1200px;
       min-width: 1000px;
       margin: auto;

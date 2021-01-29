@@ -11,6 +11,7 @@ import Editor from "../views/Editor.vue";
 import DetailArticles from "../views/DetailsArticle.vue";
 import DetailQuestions from "../views/DetailsQuestions.vue";
 import QuestionList from "../views/QuestionList.vue";
+import Test from "../views/test.vue";
 
 Vue.use(VueRouter);
 
@@ -18,6 +19,10 @@ const routes = [
   {
     path: "/",
     redirect: "/home"
+  },
+  {
+    path: "/test",
+    component: Test
   },
   {
     path: "/singup",
